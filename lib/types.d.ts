@@ -5,6 +5,18 @@ type CollectionType = {
     image: string;
     products: ProductType[];
 };
+type ColorType = {
+    _id: string;
+    title: string;
+    description: string;
+    products: ProductType[];
+};
+type SizeType = {
+    _id: string;
+    title: string;
+    description: string;
+    products: ProductType[];
+};
 type ProductType = {
     _id: string;
     title: string;
@@ -13,8 +25,8 @@ type ProductType = {
     category: string;
     collections: [CollectionType];
     rate: number;
-    sizes: [string];
-    colors: [string];
+    sizes: [SizeType];
+    colors: [ColorType];
     price: number;
     expense: number;
     createdAt: Date;
