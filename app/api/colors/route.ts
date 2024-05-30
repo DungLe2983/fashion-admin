@@ -5,17 +5,17 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export const POST = async (req: NextRequest) => {
     try {
-        const { userId } = auth();
+        // const { userId } = auth();
 
-        if (!userId) {
-            return new NextResponse('Unauthorized', { status: 403 });
-        }
+        // if (!userId) {
+        //     return new NextResponse('Unauthorized', { status: 403 });
+        // }
 
         await connectToDB();
 
-        const { title, description } = await req.json();
+        const { name, description } = await req.json();
 
-        const existingColor = await Color.findOne({ title });
+        const existingColor = await Color.findOne({ name });
 
         if (existingColor) {
             return new NextResponse('Color already exists', {
@@ -23,14 +23,14 @@ export const POST = async (req: NextRequest) => {
             });
         }
 
-        if (!title ) {
-            return new NextResponse('Title is required', {
+        if (!name) {
+            return new NextResponse('name is required', {
                 status: 400,
             });
         }
 
         const newColor = await Color.create({
-            title,
+            name,
             description,
         });
 

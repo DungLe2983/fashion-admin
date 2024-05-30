@@ -10,7 +10,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 const ProductPage = () => {
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const router = useRouter();
     const [products, setProducts] = useState<ProductType[]>([]);
     const getProducts = async () => {
@@ -19,16 +19,17 @@ const ProductPage = () => {
                 method: 'GET',
             });
             const data = await res.json();
-            setProducts(data);
+            setProducts(data.data);
             setLoading(false);
         } catch (err) {
             console.log('[products_GET]', err);
         }
     };
-
+    console.log(products);
     useEffect(() => {
         getProducts();
     }, []);
+
     return loading ? (
         <Loader />
     ) : (
@@ -44,7 +45,7 @@ const ProductPage = () => {
                 </Button>
             </div>
             <Separator className='bg-grey-1 my-4' />
-            <DataTable columns={columns} data={products} searchKey='title' />
+            <DataTable columns={columns} data={products} searchKey='name' />
         </div>
     );
 };

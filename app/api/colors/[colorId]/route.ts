@@ -46,17 +46,17 @@ export const POST = async (
             return new NextResponse('color not found', { status: 404 });
         }
 
-        const { title, description } = await req.json();
+        const { name, description } = await req.json();
 
-        if (!title) {
-            return new NextResponse('Title are required', {
+        if (!name) {
+            return new NextResponse('Name are required', {
                 status: 400,
             });
         }
 
         color = await Color.findByIdAndUpdate(
             params.colorId,
-            { title, description },
+            { name, description },
             { new: true }
         );
 

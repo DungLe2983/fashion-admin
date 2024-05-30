@@ -3,7 +3,6 @@ import { Separator } from '../ui/separator';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { Button } from '@/components/ui/button';
 import {
     Form,
     FormControl,
@@ -13,6 +12,16 @@ import {
     FormLabel,
     FormMessage,
 } from '@/components/ui/form';
+import { Button } from '@/components/ui/button';
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '../ui/textarea';
 import ImageUpload from '../custom-ui/ImageUpload';
@@ -21,47 +30,97 @@ import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import Delete from '../custom-ui/Delete';
 import MultiSelect from '../custom-ui/MultiSelect';
-import MultiText from '../custom-ui/MultiText';
+import MultiSelectColor from '../custom-ui/MultiSelectColor';
 import Loader from '../custom-ui/Loader';
+import MultiSelectSize from '../custom-ui/MultiSelectSize';
+import { DataTable } from '../custom-ui/DataTable';
 
 const formSchema = z.object({
-    title: z.string().min(2).max(20),
+    name: z.string().min(2).max(20),
     description: z.string().min(2).max(500).trim(),
-    media: z.array(z.string()),
-    category: z.string(),
-    collections: z.array(z.string()),
-    sizes: z.array(z.string()),
-    colors: z.array(z.string()),
-    rate: z.coerce.number().min(0.1),
-    price: z.coerce.number().min(0.1),
-    expense: z.coerce.number().min(0.1),
+    image: z.array(z.string()),
+    categories: z.array(z.string()),
 });
 interface ProductFormProps {
     initialData?: ProductType | null; //Must have "?" to make it optional
 }
-
+// interface FormData {
+//     quantity: string;
+//     price: string;
+//     colors: string;
+//     sizes: string;
+// }
 const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
     const [loading, setLoading] = useState(true);
-    const [collections, setCollections] = useState<CollectionType[]>([]);
+    const [categories, setCategories] = useState<CategoryType[]>([]);
+    // const [selectedColor, setSelectedColor] = useState('');
+    // const [selectedSize, setSelectedSize] = useState('');
+    // const [formDataList, setFormDataList] = useState<FormData[]>([]);
+
+    // const [quantity, setQuantity] = useState('');
+    // const [price, setPrice] = useState('');
+    // const [formData, setFormData] = useState([]);
+
+    // const handleAddProductDetail = () => {
+    //     const formData = {
+    //         quantity,
+    //         price,
+    //         colors: selectedColor,
+    //         sizes: selectedSize,
+    //     };
+    //     setFormDataList([...formDataList, formData]);
+    //     setQuantity('');
+    //     setPrice('');
+    //     setSelectedColor('');
+    //     setSelectedSize('');
+    // };
+    // useEffect(() => {
+    //     console.log('FormDataList: ', formDataList);
+    // }, [formDataList]);
 
     const getCollections = async () => {
         try {
-            const res = await fetch('/api/collections', {
+            const res = await fetch('/api/categories', {
                 method: 'GET',
             });
             const data = await res.json();
-            setCollections(data);
+            console.log(data);
+            setCategories(data);
             setLoading(false);
         } catch (err) {
             console.log('[collections_GET]', err);
             toast.error('Something went wrong! Please try again.');
         }
     };
+    // const getColors = async () => {
+    //     try {
+    //         const res = await fetch('/api/colors', {
+    //             method: 'GET',
+    //         });
+    //         const data = await res.json();
+    //         setColors(data);
+    //         setLoading(false);
+    //     } catch (err) {
+    //         console.log('[colors_GET]', err);
+    //         toast.error('Something went wrong! Please try again.');
+    //     }
+    // };
+    // const getSizes = async () => {
+    //     try {
+    //         const res = await fetch('/api/sizes', {
+    //             method: 'GET',
+    //         });
+    //         const data = await res.json();
+    //         setSizes(data);
+    //         setLoading(false);
+    //     } catch (err) {
+    //         console.log('[sizes_GET]', err);
+    //         toast.error('Something went wrong! Please try again.');
+    //     }
+    // };
     useEffect(() => {
         getCollections();
     }, []);
-
-    console.log('Collections:', collections);
 
     const router = useRouter();
     const form = useForm<z.infer<typeof formSchema>>({
@@ -69,21 +128,15 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
         defaultValues: initialData
             ? {
                   ...initialData,
-                  collections: initialData.collections.map(
-                      (collection) => collection._id
+                  categories: initialData.category_id.map(
+                      (category) => category._id
                   ),
               }
             : {
-                  title: '',
+                  name: '',
                   description: '',
-                  media: [],
-                  category: '',
-                  collections: [],
-                  rate: 0.1,
-                  sizes: [],
-                  colors: [],
-                  price: 0.1,
-                  expense: 0.1,
+                  image: [],
+                  categories: [],
               },
     });
     const handleKeyPress = (
@@ -116,13 +169,14 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
             toast.error('Something went wrong. Please try again!');
         }
     };
-    return loading ? <Loader/> :
-     (
+    return loading ? (
+        <Loader />
+    ) : (
         <div className='p-10'>
             {initialData ? (
                 <div className='flex items-center justify-between'>
                     <p className='text-heading2-bold'>Edit Product</p>
-                    <Delete id={initialData._id} item="product" />
+                    <Delete id={initialData._id} item='product' />
                 </div>
             ) : (
                 <p className='text-heading2-bold'>Create Product</p>
@@ -136,13 +190,13 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
                 >
                     <FormField
                         control={form.control}
-                        name='title'
+                        name='name'
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Title</FormLabel>
+                                <FormLabel>Name</FormLabel>
                                 <FormControl>
                                     <Input
-                                        placeholder='Title'
+                                        placeholder='Name'
                                         {...field}
                                         onKeyDown={handleKeyPress}
                                     />
@@ -171,7 +225,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
                     />
                     <FormField
                         control={form.control}
-                        name='media'
+                        name='image'
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Image</FormLabel>
@@ -197,100 +251,30 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
                             </FormItem>
                         )}
                     />
-                    <div className='md:grid md:grid-cols-3 gap-8'>
+                    {categories.length > 0 && (
                         <FormField
                             control={form.control}
-                            name='price'
+                            name='categories'
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Price (đ)</FormLabel>
+                                    <FormLabel>Categories</FormLabel>
                                     <FormControl>
-                                        <Input
-                                            type='number'
-                                            placeholder='Price'
-                                            {...field}
-                                            onKeyDown={handleKeyPress}
-                                        />
-                                    </FormControl>
-                                    <FormMessage className='text-red-1' />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name='expense'
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Expense (đ)</FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            type='number'
-                                            placeholder='Expense'
-                                            {...field}
-                                            onKeyDown={handleKeyPress}
-                                        />
-                                    </FormControl>
-                                    <FormMessage className='text-red-1' />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name='rate'
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Rate</FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            type='number'
-                                            placeholder='Rate'
-                                            {...field}
-                                            onKeyDown={handleKeyPress}
-                                        />
-                                    </FormControl>
-                                    <FormMessage className='text-red-1' />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name='category'
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Category</FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            placeholder='Category'
-                                            {...field}
-                                            onKeyDown={handleKeyPress}
-                                        />
-                                    </FormControl>
-                                    <FormMessage className='text-red-1' />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name='colors'
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Colors</FormLabel>
-                                    <FormControl>
-                                        <MultiText
-                                            placeholder='Colors'
+                                        <MultiSelect
+                                            placeholder='Categories'
+                                            categories={categories}
                                             value={field.value}
-                                            onChange={(color) =>
+                                            onChange={(_id) =>
                                                 field.onChange([
                                                     ...field.value,
-                                                    color,
+                                                    _id,
                                                 ])
                                             }
-                                            onRemove={(colorToRemove) =>
+                                            onRemove={(idToRemove) =>
                                                 field.onChange([
                                                     ...field.value.filter(
-                                                        (color) =>
-                                                            color !==
-                                                            colorToRemove
+                                                        (categoryId) =>
+                                                            categoryId !==
+                                                            idToRemove
                                                     ),
                                                 ])
                                             }
@@ -300,73 +284,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
                                 </FormItem>
                             )}
                         />
-
-                        {collections.length > 0 && (
-                            <FormField
-                                control={form.control}
-                                name='collections'
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Collections</FormLabel>
-                                        <FormControl>
-                                            <MultiSelect
-                                                placeholder='Collections'
-                                                collections={collections}
-                                                value={field.value}
-                                                onChange={(_id) =>
-                                                    field.onChange([
-                                                        ...field.value,
-                                                        _id,
-                                                    ])
-                                                }
-                                                onRemove={(idToRemove) =>
-                                                    field.onChange([
-                                                        ...field.value.filter(
-                                                            (collectionId) =>
-                                                                collectionId !==
-                                                                idToRemove
-                                                        ),
-                                                    ])
-                                                }
-                                            />
-                                        </FormControl>
-                                        <FormMessage className='text-red-1' />
-                                    </FormItem>
-                                )}
-                            />
-                        )}
-                        <FormField
-                            control={form.control}
-                            name='sizes'
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Sizes</FormLabel>
-                                    <FormControl>
-                                        <MultiText
-                                            placeholder='Sizes'
-                                            value={field.value}
-                                            onChange={(size) =>
-                                                field.onChange([
-                                                    ...field.value,
-                                                    size,
-                                                ])
-                                            }
-                                            onRemove={(sizeToRemove) =>
-                                                field.onChange([
-                                                    ...field.value.filter(
-                                                        (size) =>
-                                                            size !==
-                                                            sizeToRemove
-                                                    ),
-                                                ])
-                                            }
-                                        />
-                                    </FormControl>
-                                    <FormMessage className='text-red-1' />
-                                </FormItem>
-                            )}
-                        />
-                    </div>
+                    )}
 
                     <div className='flex items-center gap-2'>
                         <Button type='submit' className='bg-blue-1 text-white'>

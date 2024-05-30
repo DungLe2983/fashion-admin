@@ -6,14 +6,14 @@ import Link from 'next/link';
 
 export const columns: ColumnDef<SizeType>[] = [
     {
-        accessorKey: 'title',
-        header: 'Title',
+        accessorKey: 'name',
+        header: 'Name',
         cell: ({ row }) => (
             <Link
                 href={`/sizes/${row.original._id}`}
                 className='hover:text-blue-1'
             >
-                {row.original.title}
+                {row.original.name}
             </Link>
         ),
     },
@@ -22,13 +22,9 @@ export const columns: ColumnDef<SizeType>[] = [
         header: 'Description',
         cell: ({ row }) => <p>{row.original.description}</p>,
     },
-    {
-        accessorKey: 'products',
-        header: 'Products',
-        cell: ({ row }) => <p>{row.original.products.length}</p>,
-    },
+
     {
         accessorKey: 'Actions',
-        cell: ({ row }) => <Delete item='color' id={row.original._id} />,
+        cell: ({ row }) => <Delete item='sizes' id={row.original._id} />,
     },
 ];

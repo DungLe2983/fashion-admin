@@ -22,11 +22,11 @@ import toast from 'react-hot-toast';
 import Delete from '../custom-ui/Delete';
 
 const formSchema = z.object({
-    title: z.string().min(0).max(20),
+    name: z.string().min(0).max(20),
     description: z.string().min(2).max(500).trim(),
 });
 interface SizeFormProps {
-    initialData?: ColorType | null; //Must have "?" to make it optional
+    initialData?: SizeType | null; //Must have "?" to make it optional
 }
 
 const SizeForm: React.FC<SizeFormProps> = ({ initialData }) => {
@@ -37,7 +37,7 @@ const SizeForm: React.FC<SizeFormProps> = ({ initialData }) => {
         defaultValues: initialData
             ? initialData
             : {
-                  title: '',
+                  name: '',
                   description: '',
               },
     });
@@ -90,13 +90,13 @@ const SizeForm: React.FC<SizeFormProps> = ({ initialData }) => {
                 >
                     <FormField
                         control={form.control}
-                        name='title'
+                        name='name'
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Title</FormLabel>
+                                <FormLabel>Name</FormLabel>
                                 <FormControl>
                                     <Input
-                                        placeholder='Title'
+                                        placeholder='Name'
                                         {...field}
                                         onKeyDown={handleKeyPress}
                                     />

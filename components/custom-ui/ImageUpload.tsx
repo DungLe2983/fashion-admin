@@ -29,7 +29,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
                         </div>
                         <Image
                             src={url}
-                            alt='collection'
+                            alt='category'
                             fill
                             className=' object-cover rounded-lg'
                         />

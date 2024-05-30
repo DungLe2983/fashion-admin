@@ -1,36 +1,35 @@
-type CollectionType = {
+type CategoryType = {
     _id: string;
-    title: string;
+    name: string;
     description: string;
-    image: string;
-    products: ProductType[];
 };
 type ColorType = {
     _id: string;
-    title: string;
+    name: string;
     description: string;
-    products: ProductType[];
 };
 type SizeType = {
     _id: string;
-    title: string;
+    name: string;
     description: string;
-    products: ProductType[];
 };
 type ProductType = {
     _id: string;
-    title: string;
+    name: string;
     description: string;
-    media: [string];
-    category: string;
-    collections: [CollectionType];
-    rate: number;
-    sizes: [SizeType];
-    colors: [ColorType];
-    price: number;
-    expense: number;
+    image: [string];
+    category_id: [CategoryType];
+    product_item_id: [ProductItemType];
     createdAt: Date;
     updatedAt: Date;
+};
+type ProductItemType = {
+    _id: string;
+    price: number;
+    quantity: number;
+    product_id: [ProductType];
+    size_id: [SizeType];
+    color_id: [ColorType];
 };
 type OrderColumnType = {
     _id: string;
@@ -46,8 +45,31 @@ type OrderItemType = {
     quantity: number;
 };
 
-type CustomerType = {
-    Id: string;
+type UserType = {
+    _id: string;
     name: string;
     email: string;
+    password: string;
+    phoneNumber: number;
+    address: string;
+    sex: string;
+    birthday: Date;
+    cart_id: CartType;
+    createdAt: Date;
+    updatedAt: Date;
+};
+type CartType = {
+    _id: string;
+    user_id: UserType;
+    cart_item_id: CartItemType;
+    createdAt: Date;
+    updatedAt: Date;
+};
+type CartItemType = {
+    _id: string;
+    cart_id: CartType;
+    product_item_id: ProductItemType;
+    item_quantity: number;
+    createdAt: Date;
+    updatedAt: Date;
 };

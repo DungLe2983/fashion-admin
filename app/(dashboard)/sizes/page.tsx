@@ -41,7 +41,7 @@ const Sizes = () => {
                 </Button>
             </div>
             <Separator className='my-6 bg-grey-1' />
-            <DataTable columns={columns} data={sizes} searchKey='title' />
+            <DataTable columns={columns} data={sizes} searchKey='name' />
         </div>
     );
 };

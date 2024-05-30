@@ -3,6 +3,7 @@ import { connectToDB } from '@/lib/mongoDB';
 import Collection from '@/lib/models/Collection';
 import { auth } from '@clerk/nextjs/server';
 import Product from '@/lib/models/Product';
+import Category from '@/lib/models/Category';
 
 export const GET = async (
     req: NextRequest,
@@ -11,7 +12,7 @@ export const GET = async (
     try {
         await connectToDB();
 
-        const collection = await Collection.findById(params.collectionId);
+        const collection = await Category.findById(params.collectionId);
 
         if (!collection) {
             return new NextResponse(
@@ -40,29 +41,29 @@ export const POST = async (
 
         await connectToDB();
 
-        let collection = await Collection.findById(params.collectionId);
+        let category = await Category.findById(params.collectionId);
 
-        if (!collection) {
-            return new NextResponse('Collection not found', { status: 404 });
+        if (!category) {
+            return new NextResponse('category not found', { status: 404 });
         }
 
-        const { title, description, image } = await req.json();
+        const { name, description } = await req.json();
 
-        if (!title || !image) {
-            return new NextResponse('Title and image are required', {
+        if (!name) {
+            return new NextResponse('Title  are required', {
                 status: 400,
             });
         }
 
-        collection = await Collection.findByIdAndUpdate(
+        category = await Category.findByIdAndUpdate(
             params.collectionId,
-            { title, description, image },
+            { name, description },
             { new: true }
         );
 
-        await collection.save();
+        await category.save();
 
-        return NextResponse.json(collection, { status: 200 });
+        return NextResponse.json(category, { status: 200 });
     } catch (err) {
         console.log('[collectionId_POST]', err);
         return new NextResponse('Internal error', { status: 500 });
@@ -74,21 +75,17 @@ export const DELETE = async (
     { params }: { params: { collectionId: string } }
 ) => {
     try {
-        const { userId } = auth();
+        // const { userId } = auth();
 
-        if (!userId) {
-            return new NextResponse('Unauthorized', { status: 401 });
-        }
+        // if (!userId) {
+        //     return new NextResponse('Unauthorized', { status: 401 });
+        // }
 
         await connectToDB();
 
-        await Collection.findByIdAndDelete(params.collectionId);
-        await Product.updateMany(
-                { collections: params.collectionId },
-                { $pull: { collections: params.collectionId } }
-            );
+        await Category.findByIdAndDelete(params.collectionId);
 
-        return new NextResponse('Collection is deleted', { status: 200 });
+        return new NextResponse('Category is deleted', { status: 200 });
     } catch (err) {
         console.log('[collectionId_DELETE]', err);
         return new NextResponse('Internal error', { status: 500 });

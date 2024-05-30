@@ -22,12 +22,11 @@ import toast from 'react-hot-toast';
 import Delete from '../custom-ui/Delete';
 
 const formSchema = z.object({
-    title: z.string().min(2).max(20),
+    name: z.string().min(2).max(20),
     description: z.string().min(2).max(500).trim(),
-    image: z.string(),
 });
 interface CollectionFormProps {
-    initialData?: CollectionType | null; //Must have "?" to make it optional
+    initialData?: CategoryType | null; //Must have "?" to make it optional
 }
 
 const CollectionForm: React.FC<CollectionFormProps> = ({ initialData }) => {
@@ -38,9 +37,8 @@ const CollectionForm: React.FC<CollectionFormProps> = ({ initialData }) => {
         defaultValues: initialData
             ? initialData
             : {
-                  title: '',
+                  name: '',
                   description: '',
-                  image: '',
               },
     });
     const handleKeyPress = (
@@ -56,8 +54,8 @@ const CollectionForm: React.FC<CollectionFormProps> = ({ initialData }) => {
         try {
             setLoading(true);
             const url = initialData
-                ? `/api/collections/${initialData._id}`
-                : '/api/collections';
+                ? `/api/categories/${initialData._id}`
+                : '/api/categories';
             const res = await fetch(url, {
                 method: 'POST',
                 body: JSON.stringify(values),
@@ -67,8 +65,8 @@ const CollectionForm: React.FC<CollectionFormProps> = ({ initialData }) => {
                 toast.success(
                     `Collection ${initialData ? 'updated' : 'created'}`
                 );
-                window.location.href = '/collections';
-                router.push('/collections');
+                window.location.href = '/categories';
+                router.push('/categories');
             }
         } catch (err) {
             console.log('[collection_POST]', err);
@@ -79,11 +77,11 @@ const CollectionForm: React.FC<CollectionFormProps> = ({ initialData }) => {
         <div className='p-10'>
             {initialData ? (
                 <div className='flex items-center justify-between'>
-                    <p className='text-heading2-bold'>Edit Collection</p>
+                    <p className='text-heading2-bold'>Edit Category</p>
                     <Delete id={initialData._id} item="collection" />
                 </div>
             ) : (
-                <p className='text-heading2-bold'>Create Collection</p>
+                <p className='text-heading2-bold'>Create Category</p>
             )}
 
             <Separator className='mt-4 mb-7 bg-grey-1' />
@@ -94,13 +92,13 @@ const CollectionForm: React.FC<CollectionFormProps> = ({ initialData }) => {
                 >
                     <FormField
                         control={form.control}
-                        name='title'
+                        name='name'
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Title</FormLabel>
+                                <FormLabel>Name</FormLabel>
                                 <FormControl>
                                     <Input
-                                        placeholder='Title'
+                                        placeholder='Name'
                                         {...field}
                                         onKeyDown={handleKeyPress}
                                     />
@@ -127,23 +125,7 @@ const CollectionForm: React.FC<CollectionFormProps> = ({ initialData }) => {
                             </FormItem>
                         )}
                     />
-                    <FormField
-                        control={form.control}
-                        name='image'
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Image</FormLabel>
-                                <FormControl>
-                                    <ImageUpload
-                                        value={field.value ? [field.value] : []}
-                                        onChange={(url) => field.onChange(url)}
-                                        onRemove={() => field.onChange('')}
-                                    />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
+
                     <div className='flex items-center gap-2'>
                         <Button type='submit' className='bg-blue-1 text-white'>
                             Submit
@@ -151,7 +133,7 @@ const CollectionForm: React.FC<CollectionFormProps> = ({ initialData }) => {
                         <Button
                             type='button'
                             className=' bg-slate-300'
-                            onClick={() => router.push('/collections')}
+                            onClick={() => router.push('/categories')}
                         >
                             Cancel
                         </Button>

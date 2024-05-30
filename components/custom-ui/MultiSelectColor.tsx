@@ -3,22 +3,22 @@ import { X } from 'lucide-react';
 import { Command, CommandInput } from '@/components/ui/command';
 import { Badge } from '../ui/badge';
 
-interface CategoryType {
+interface ColorType {
     _id: string;
-    name: string;
+    title: string;
 }
 
-interface MultiSelectProps {
+interface MultiSelectColorProps {
     placeholder: string;
-    categories: CategoryType[];
+    colors: ColorType[];
     value: string[];
     onChange: (value: string) => void;
     onRemove: (value: string) => void;
 }
 
-const MultiSelect: React.FC<MultiSelectProps> = ({
+const MultiSelectColor: React.FC<MultiSelectColorProps> = ({
     placeholder,
-    categories,
+    colors,
     value,
     onChange,
     onRemove,
@@ -26,29 +26,29 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
     const [inputValue, setInputValue] = useState('');
     const [open, setOpen] = useState(false);
 
-    const selectedCollections = value.map((id) =>
-        categories.find((category) => category._id === id)
-    ) as CategoryType[];
+    const selectedColors = value.map((id) =>
+        colors.find((color) => color._id === id)
+    ) as ColorType[];
 
-    const selectableCollections = categories.filter(
-        (category) => !selectedCollections.includes(category)
+    const selectableColors = colors.filter(
+        (color) => !selectedColors.includes(color)
     );
 
-    const handleSelect = (categoryId: string) => {
-        onChange(categoryId);
+    const handleSelect = (colorId: string) => {
+        onChange(colorId);
         setInputValue('');
     };
 
     return (
         <Command className='overflow-visible bg-white'>
             <div className='flex gap-1 flex-wrap border rounded-md'>
-                {selectedCollections.map((category) => (
-                    <Badge key={category._id}>
-                        {category.name}
+                {selectedColors.map((color) => (
+                    <Badge key={color._id}>
+                        {color.title}
                         <button
                             type='button'
                             className='ml-1 hover:text-red-1'
-                            onClick={() => onRemove(category._id)}
+                            onClick={() => onRemove(color._id)}
                         >
                             <X className='h-3 w-3' />
                         </button>
@@ -68,14 +68,14 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
             {open && (
                 <div className='relative mt-2'>
                     <div className='absolute w-full z-30 top-0 overflow-auto border rounded-md shadow-md'>
-                        {selectableCollections.map((category) => (
+                        {selectableColors.map((color) => (
                             <div
-                                key={category._id}
+                                key={color._id}
                                 onMouseDown={(e) => e.preventDefault()}
-                                onClick={() => handleSelect(category._id)}
+                                onClick={() => handleSelect(color._id)}
                                 className='bg-grey-2 cursor-pointer hover:bg-gray-400'
                             >
-                                {category.name}
+                                {color.title}
                             </div>
                         ))}
                     </div>
@@ -85,4 +85,4 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
     );
 };
 
-export default MultiSelect;
+export default MultiSelectColor;

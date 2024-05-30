@@ -10,10 +10,10 @@ const CollectionDetails = ({
 }) => {
     const [loading, setLoading] = useState(true);
     const [collectionDetails, setCollectionDetails] =
-        useState<CollectionType | null>(null);
+        useState<CategoryType | null>(null);
     const getCollectionDetails = async () => {
         try {
-            const res = await fetch(`/api/collections/${params.collectionId}`, {
+            const res = await fetch(`/api/categories/${params.collectionId}`, {
                 method: 'GET',
             });
             const data = await res.json();

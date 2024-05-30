@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const colorSchema = new mongoose.Schema({
+const categorySchema = new mongoose.Schema({
     name: {
         type: String,
     },
@@ -15,7 +15,7 @@ const colorSchema = new mongoose.Schema({
     },
 });
 
-const Color =
-    mongoose.models.Color || mongoose.model('Color', colorSchema);
+const Category =
+    mongoose.models.Category || mongoose.model('Category', categorySchema);
 
-export default Color;
+export default Category;

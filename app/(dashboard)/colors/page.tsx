@@ -19,6 +19,7 @@ const Colors = () => {
             });
             const data = await res.json();
             setColors(data);
+            console.log(data);
             setLoading(false);
         } catch (err) {
             console.log('[colors_GET]', err);
@@ -41,7 +42,7 @@ const Colors = () => {
                 </Button>
             </div>
             <Separator className='my-6 bg-grey-1' />
-            <DataTable columns={columns} data={colors} searchKey='title' />
+            <DataTable columns={columns} data={colors} searchKey='name' />
         </div>
     );
 };

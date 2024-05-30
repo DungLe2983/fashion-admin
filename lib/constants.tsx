@@ -20,7 +20,7 @@ export const navLinks = [
         label: 'Products',
     },
     {
-        url: '/collections',
+        url: '/categories',
         icon: <Shapes />,
         label: 'Categories',
     },
@@ -40,8 +40,8 @@ export const navLinks = [
         label: 'Orders',
     },
     {
-        url: '/customers',
+        url: '/users',
         icon: <UsersRound />,
-        label: 'Customers',
+        label: 'Users',
     },
 ];

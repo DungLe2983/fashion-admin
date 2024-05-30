@@ -74,19 +74,15 @@ export const DELETE = async (
     { params }: { params: { sizeId: string } }
 ) => {
     try {
-        const { userId } = auth();
+        // const { userId } = auth();
 
-        if (!userId) {
-            return new NextResponse('Unauthorized', { status: 401 });
-        }
+        // if (!userId) {
+        //     return new NextResponse('Unauthorized', { status: 401 });
+        // }
 
         await connectToDB();
 
         await Size.findByIdAndDelete(params.sizeId);
-        await Product.updateMany(
-            { sizes: params.sizeId },
-            { $pull: { colors: params.sizeId } }
-        );
 
         return new NextResponse('Size is deleted', { status: 200 });
     } catch (err) {

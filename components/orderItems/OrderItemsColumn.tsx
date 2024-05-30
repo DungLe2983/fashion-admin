@@ -13,7 +13,7 @@ export const columns: ColumnDef<OrderItemType>[] = [
                     href={`/products/${row.original.product._id}`}
                     className='hover:text-red-1'
                 >
-                    {row.original.product.title}
+                    {row.original.product.name}
                 </Link>
             );
         },

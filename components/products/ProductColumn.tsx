@@ -7,39 +7,42 @@ import Delete from '../custom-ui/Delete';
 
 export const columns: ColumnDef<ProductType>[] = [
     {
-        accessorKey: 'title',
-        header: 'Title',
+        accessorKey: 'name',
+        header: 'Name',
         cell: ({ row }) => (
             <Link
                 href={`/products/${row.original._id}`}
-                className='hover:text-red-1'
+                className='hover:text-red-1 font-semibold'
             >
-                {row.original.title}
+                {row.original.name}
             </Link>
         ),
     },
     {
-        accessorKey: 'category',
-        header: 'Category',
+        accessorKey: 'description',
+        header: 'Description',
+        cell: ({ row }) => <p className='w-60 text-[14px]'>{row.original.description}</p>,
     },
     {
-        accessorKey: 'collections',
-        header: 'Collections',
-        cell: ({ row }) =>
-            row.original.collections
-                .map((collection) => collection.title)
-                .join(', '),
+        accessorKey: 'category_id',
+        header: 'Categories',
+        cell: ({ row }) => (
+            <p>{row.original.category_id.map((c) => c.name).join(', ')}</p>
+        ),
     },
     {
-        accessorKey: 'price',
-        header: 'Price ($)',
-    },
-    {
-        accessorKey: 'expense',
-        header: 'Expense ($)',
+        accessorKey: 'image',
+        header: 'Image',
+        cell: ({ row }) => (
+            <img
+                src={row.original.image}
+                className='w-40 h-40 object-cover'
+                alt='Image'
+            />
+        ),
     },
     {
         id: 'actions',
-        cell: ({ row }) => <Delete item='product' id={row.original._id} />,
+        cell: ({ row }) => <Delete item='products' id={row.original._id} />,
     },
 ];

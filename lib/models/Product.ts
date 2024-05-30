@@ -2,33 +2,15 @@ import mongoose from 'mongoose';
 
 const ProductSchema = new mongoose.Schema(
     {
-        title: String,
+        name: String,
         description: String,
-        media: [String],
-        category: String,
-        collections: [
-            { type: mongoose.Schema.Types.ObjectId, ref: 'Collection' },
+        image: [String],
+        category_id: [
+            { type: mongoose.Schema.Types.ObjectId, ref: 'Category' },
         ],
-        rate: {
-            type: mongoose.Schema.Types.Decimal128,
-            get: (v: mongoose.Schema.Types.Decimal128) => {
-                return parseFloat(v.toString());
-            },
-        },
-        sizes: [String],
-        colors: [String],
-        price: {
-            type: mongoose.Schema.Types.Decimal128,
-            get: (v: mongoose.Schema.Types.Decimal128) => {
-                return parseFloat(v.toString());
-            },
-        },
-        expense: {
-            type: mongoose.Schema.Types.Decimal128,
-            get: (v: mongoose.Schema.Types.Decimal128) => {
-                return parseFloat(v.toString());
-            },
-        },
+        product_item_id: [
+            { type: mongoose.Schema.Types.ObjectId, ref: 'ProductItem' },
+        ],
         createdAt: { type: Date, default: Date.now },
         updatedAt: { type: Date, default: Date.now },
     },

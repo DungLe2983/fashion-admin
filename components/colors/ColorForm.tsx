@@ -22,7 +22,7 @@ import toast from 'react-hot-toast';
 import Delete from '../custom-ui/Delete';
 
 const formSchema = z.object({
-    title: z.string().min(2).max(20),
+    name: z.string().min(2).max(20),
     description: z.string().min(2).max(500).trim(),
 });
 interface ColorFormProps {
@@ -37,7 +37,7 @@ const ColorForm: React.FC<ColorFormProps> = ({ initialData }) => {
         defaultValues: initialData
             ? initialData
             : {
-                  title: '',
+                  name: '',
                   description: '',
               },
     });
@@ -62,9 +62,7 @@ const ColorForm: React.FC<ColorFormProps> = ({ initialData }) => {
             });
             if (res.ok) {
                 setLoading(false);
-                toast.success(
-                    `Color ${initialData ? 'updated' : 'created'}`
-                );
+                toast.success(`Color ${initialData ? 'updated' : 'created'}`);
                 window.location.href = '/colors';
                 router.push('/colors');
             }
@@ -92,13 +90,13 @@ const ColorForm: React.FC<ColorFormProps> = ({ initialData }) => {
                 >
                     <FormField
                         control={form.control}
-                        name='title'
+                        name='name'
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Title</FormLabel>
+                                <FormLabel>Name</FormLabel>
                                 <FormControl>
                                     <Input
-                                        placeholder='Title'
+                                        placeholder='Name'
                                         {...field}
                                         onKeyDown={handleKeyPress}
                                     />
