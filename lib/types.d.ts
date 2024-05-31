@@ -27,9 +27,9 @@ type ProductItemType = {
     _id: string;
     price: number;
     quantity: number;
-    product_id: [ProductType];
-    size_id: [SizeType];
-    color_id: [ColorType];
+    product_id: ProductType;
+    size_id: SizeType;
+    color_id: ColorType;
 };
 type OrderColumnType = {
     _id: string;

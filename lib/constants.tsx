@@ -4,6 +4,7 @@ import {
     Shapes,
     ShoppingBag,
     Shrink,
+    SquareKanban,
     Tag,
     UsersRound,
 } from 'lucide-react';
@@ -23,6 +24,11 @@ export const navLinks = [
         url: '/categories',
         icon: <Shapes />,
         label: 'Categories',
+    },
+    {
+        url: '/productitems',
+        icon: <SquareKanban />,
+        label: 'Product Items',
     },
     {
         url: '/sizes',
