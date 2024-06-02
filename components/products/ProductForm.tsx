@@ -35,9 +35,8 @@ import Loader from '../custom-ui/Loader';
 import MultiSelectSize from '../custom-ui/MultiSelectSize';
 import { DataTable } from '../custom-ui/DataTable';
 
-
 const formSchema = z.object({
-    name: z.string().min(2).max(20),
+    name: z.string().min(2).max(500),
     description: z.string().min(2).max(500).trim(),
     image: z.array(z.string()),
     categories: z.array(z.string()),
@@ -138,7 +137,6 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
                   description: '',
                   image: [],
                   categories: [],
-
               },
     });
     const handleKeyPress = (

@@ -5,8 +5,18 @@ import {
     getSalesPerMonth,
     getTotalCustomers,
     getTotalSales,
+    getTotalProducts,
+    getTotalCategories,
+    getTotalColors,
 } from '@/lib/actions/actions';
-import { CircleDollarSign, ShoppingBag, UserRound } from 'lucide-react';
+import {
+    CircleDollarSign,
+    Palette,
+    Shapes,
+    ShoppingBag,
+    Tag,
+    UserRound,
+} from 'lucide-react';
 
 export default async function Home() {
     const totalRevenue = await getTotalSales().then(
@@ -14,6 +24,9 @@ export default async function Home() {
     );
     const totalOrders = await getTotalSales().then((data) => data.totalOrders);
     const totalCustomers = await getTotalCustomers();
+    const totalProducts = await getTotalProducts();
+    const totalCategories = await getTotalCategories();
+    const totalColors = await getTotalColors();
 
     const graphData = await getSalesPerMonth();
 
@@ -32,7 +45,6 @@ export default async function Home() {
                         <p className='text-body-bold'>{totalRevenue} VNĐ </p>
                     </CardContent>
                 </Card>
-
                 <Card>
                     <CardHeader className='flex flex-row justify-between items-center'>
                         <CardTitle>Total Orders</CardTitle>
@@ -42,14 +54,41 @@ export default async function Home() {
                         <p className='text-body-bold'>{totalOrders}</p>
                     </CardContent>
                 </Card>
-
                 <Card>
                     <CardHeader className='flex flex-row justify-between items-center'>
-                        <CardTitle>Total Customer</CardTitle>
+                        <CardTitle>Total Users</CardTitle>
                         <UserRound className='max-sm:hidden' />
                     </CardHeader>
                     <CardContent>
                         <p className='text-body-bold'>{totalCustomers}</p>
+                    </CardContent>
+                </Card>
+                <Card>
+                    <CardHeader className='flex flex-row justify-between items-center'>
+                        <CardTitle>Total Products</CardTitle>
+                        <Tag className='max-sm:hidden' />
+                    </CardHeader>
+                    <CardContent>
+                        <p className='text-body-bold'>{totalProducts}</p>
+                    </CardContent>
+                </Card>
+                <Card>
+                    <CardHeader className='flex flex-row justify-between items-center'>
+                        <CardTitle>Total Categories</CardTitle>
+                        <Shapes className='max-sm:hidden' />
+                    </CardHeader>
+                    <CardContent>
+                        <p className='text-body-bold'>{totalCategories}</p>
+                    </CardContent>
+                </Card>
+
+                <Card>
+                    <CardHeader className='flex flex-row justify-between items-center'>
+                        <CardTitle>Total Colors</CardTitle>
+                        <Palette className='max-sm:hidden' />
+                    </CardHeader>
+                    <CardContent>
+                        <p className='text-body-bold'>{totalColors}</p>
                     </CardContent>
                 </Card>
             </div>

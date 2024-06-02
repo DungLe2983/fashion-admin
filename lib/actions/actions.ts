@@ -1,5 +1,8 @@
-import Customer from '../models/Customer';
+import Category from '../models/Category';
+import Color from '../models/Color';
 import Order from '../models/Order';
+import Product from '../models/Product';
+import User from '../models/User';
 import { connectToDB } from '../mongoDB';
 
 export const getTotalSales = async () => {
@@ -15,9 +18,28 @@ export const getTotalSales = async () => {
 
 export const getTotalCustomers = async () => {
     await connectToDB();
-    const customers = await Customer.find();
-    const totalCustomers = customers.length;
+    const users = await User.find();
+    const totalCustomers = users.length;
     return totalCustomers;
+};
+
+export const getTotalProducts = async () => {
+    await connectToDB();
+    const products = await Product.find();
+    const totalProducts = products.length;
+    return totalProducts;
+};
+export const getTotalCategories = async () => {
+    await connectToDB();
+    const categories = await Category.find();
+    const totalCategories = categories.length;
+    return totalCategories;
+};
+export const getTotalColors = async () => {
+    await connectToDB();
+    const colors = await Color.find();
+    const totalColors = colors.length;
+    return totalColors;
 };
 
 export const getSalesPerMonth = async () => {

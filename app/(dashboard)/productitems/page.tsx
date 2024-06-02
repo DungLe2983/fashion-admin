@@ -50,7 +50,7 @@ const ProductItemPage = () => {
             <DataTable
                 columns={columns}
                 data={productitems}
-                searchKey='price'
+                searchKey='quantity'
             />
         </div>
     );
