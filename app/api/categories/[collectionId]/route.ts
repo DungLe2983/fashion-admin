@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { connectToDB } from '@/lib/mongoDB';
-import Collection from '@/lib/models/Collection';
-import { auth } from '@clerk/nextjs/server';
 import Product from '@/lib/models/Product';
 import Category from '@/lib/models/Category';
 
@@ -33,11 +31,6 @@ export const POST = async (
     { params }: { params: { collectionId: string } }
 ) => {
     try {
-        const { userId } = auth();
-
-        if (!userId) {
-            return new NextResponse('Unauthorized', { status: 401 });
-        }
 
         await connectToDB();
 
@@ -50,7 +43,7 @@ export const POST = async (
         const { name, description } = await req.json();
 
         if (!name) {
-            return new NextResponse('Title  are required', {
+            return new NextResponse('Title are required', {
                 status: 400,
             });
         }

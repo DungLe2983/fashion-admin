@@ -32,11 +32,11 @@ export const POST = async (
     { params }: { params: { colorId: string } }
 ) => {
     try {
-        const { userId } = auth();
+        // const { userId } = auth();
 
-        if (!userId) {
-            return new NextResponse('Unauthorized', { status: 401 });
-        }
+        // if (!userId) {
+        //     return new NextResponse('Unauthorized', { status: 401 });
+        // }
 
         await connectToDB();
 

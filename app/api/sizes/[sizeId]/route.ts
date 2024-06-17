@@ -32,11 +32,11 @@ export const POST = async (
     { params }: { params: { sizeId: string } }
 ) => {
     try {
-        const { userId } = auth();
+        // const { userId } = auth();
 
-        if (!userId) {
-            return new NextResponse('Unauthorized', { status: 401 });
-        }
+        // if (!userId) {
+        //     return new NextResponse('Unauthorized', { status: 401 });
+        // }
 
         await connectToDB();
 
@@ -46,17 +46,17 @@ export const POST = async (
             return new NextResponse('size not found', { status: 404 });
         }
 
-        const { title, description } = await req.json();
+        const { name, description } = await req.json();
 
-        if (!title) {
-            return new NextResponse('Title are required', {
+        if (!name) {
+            return new NextResponse('name are required', {
                 status: 400,
             });
         }
 
         size = await Size.findByIdAndUpdate(
             params.sizeId,
-            { title, description },
+            { name, description },
             { new: true }
         );
 
