@@ -31,18 +31,23 @@ type ProductItemType = {
     size_id: SizeType;
     color_id: ColorType;
 };
-type OrderColumnType = {
+type OrderType = {
     _id: string;
-    customer: string;
-    products: number;
-    totalAmount: number;
-    createdAt: string;
+    user_id: UserType;
+    detail_id: OrderDetailType;
+    phone: string;
+    address: string;
+    note: string;
+    total: number;
+    dateCreated: string;
+    status: number;
 };
-type OrderItemType = {
-    product: ProductType;
-    color: string;
-    size: string;
+type OrderDetailType = {
+    _id: string;
+    product_item_id: ProductItemType;
+    order_id: OrderType;
     quantity: number;
+    price: number;
 };
 
 type UserType = {

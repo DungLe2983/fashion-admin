@@ -5,10 +5,7 @@ import Link from "next/link";
 import Delete from "../custom-ui/Delete";
 
 export const columns: ColumnDef<UserType>[] = [
-    // {
-    //     accessorKey: '_id',
-    //     header: 'ID',
-    // },
+
     {
         accessorKey: "name",
         header: "Name",
