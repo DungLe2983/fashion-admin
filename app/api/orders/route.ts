@@ -9,7 +9,7 @@ export const GET = async (req: NextRequest) => {
         await connectToDB();
 
         const orders = await Order.find()
-            .sort({ createdAt: 'desc' })
+            .sort({ createdAt: 'asc' })
             .populate({ path: 'user_id', model: User })
             .populate({ path: 'detail_id', model: OrderDetail });
 

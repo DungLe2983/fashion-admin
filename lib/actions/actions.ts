@@ -8,12 +8,12 @@ import { connectToDB } from '../mongoDB';
 export const getTotalSales = async () => {
     await connectToDB();
     const orders = await Order.find();
-    const totalOrders = orders.length;
-    const totalRevenue = orders.reduce(
-        (acc, order) => acc + order.totalAmount,
-        0
-    );
-    return { totalOrders, totalRevenue };
+
+    const totalSales = orders.reduce((total, order) => {
+        return total + order.total;
+    }, 0);
+
+    return totalSales;
 };
 
 export const getTotalCustomers = async () => {
@@ -21,6 +21,13 @@ export const getTotalCustomers = async () => {
     const users = await User.find();
     const totalCustomers = users.length;
     return totalCustomers;
+};
+
+export const getTotalOrders = async () => {
+    await connectToDB();
+    const orders = await Order.find();
+    const totalOrders = orders.length;
+    return totalOrders;
 };
 
 export const getTotalProducts = async () => {

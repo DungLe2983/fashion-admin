@@ -18,7 +18,7 @@ const Orders = () => {
             });
             const data = await res.json();
             setOrders(data.data);
-            console.log('OderData====', data);
+            // console.log('OderData====', data);
             setLoading(false);
         } catch (err) {
             console.log('[orders_GET', err);

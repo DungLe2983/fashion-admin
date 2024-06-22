@@ -14,45 +14,51 @@ interface SaleItem {
     name: string;
     sales: number;
 }
-const generateFakeData = (): SaleItem[] => {
-    const data: SaleItem[] = [];
-    const months = [
-        'Tháng 1',
-        'Tháng 2',
-        'Tháng 3',
-        'Tháng 4',
-        'Tháng 5',
-        'Tháng 6',
-        'Tháng 7',
-        'Tháng 8',
-        'Tháng 9',
-        'Tháng 10',
-        'Tháng 11',
-        'Tháng 12',
-    ];
-    for (let i = 0; i < 12; i++) {
-        data.push({
-            name: months[i],
-            sales: Math.floor(Math.random() * 100),
-        });
-    }
-    return data;
-};
 
 const SalesChart = ({ data }: { data: any[] }) => {
-    const [chartData, setChartData] = useState<SaleItem[]>([]);
+    const [orders, setOrders] = useState<any[]>([]);
+
+    const getOrders = async () => {
+        try {
+            const res = await fetch('/api/orders', {
+                method: 'GET',
+            });
+            const data = await res.json();
+            setOrders(data.data);
+        } catch (err) {
+            console.log('[orders_GET', err);
+        }
+    };
 
     useEffect(() => {
-        // Tạo dữ liệu giả
-        const data = generateFakeData();
-        setChartData(data);
+        getOrders();
+    }, []);
+    const salesData = orders.reduce((result: any[], order: any) => {
+        const dateCreated = new Date(order.dateCreated);
+        const name = dateCreated.toLocaleDateString(); // Chuyển đổi thành ngày/tháng/năm
+
+        // Kiểm tra xem ngày đã tồn tại trong mảng result chưa
+        const existingDay = result.find((item) => item.name === name);
+
+        if (existingDay) {
+            // Nếu ngày đã tồn tại, cộng tổng doanh thu vào ngày đó
+            existingDay.sales += order.total;
+        } else {
+            // Nếu ngày chưa tồn tại, thêm một mục mới vào mảng result
+            result.push({
+                name: name,
+                sales: order.total,
+            });
+        }
+
+        return result;
     }, []);
 
     return (
         <ResponsiveContainer width='100%' height={300}>
             <LineChart
                 className='w-full h-full'
-                data={chartData}
+                data={salesData}
                 margin={{ top: 5, right: 20, bottom: 5, left: 0 }}
             >
                 <Line type='monotone' dataKey='sales' stroke='#8884d8' />

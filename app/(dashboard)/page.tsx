@@ -8,6 +8,7 @@ import {
     getTotalProducts,
     getTotalCategories,
     getTotalColors,
+    getTotalOrders,
 } from '@/lib/actions/actions';
 import {
     CircleDollarSign,
@@ -19,10 +20,8 @@ import {
 } from 'lucide-react';
 
 export default async function Home() {
-    const totalRevenue = await getTotalSales().then(
-        (data) => data.totalRevenue
-    );
-    const totalOrders = await getTotalSales().then((data) => data.totalOrders);
+    const totalRevenue = await getTotalSales();
+    const totalOrders = await getTotalOrders();
     const totalCustomers = await getTotalCustomers();
     const totalProducts = await getTotalProducts();
     const totalCategories = await getTotalCategories();
@@ -42,8 +41,9 @@ export default async function Home() {
                         <CircleDollarSign className='max-sm:hidden' />
                     </CardHeader>
                     <CardContent>
-                        {/* <p className='text-body-bold'>{totalRevenue} VNĐ </p> */}
-                        <p className='text-body-bold'>21.850.000 VNĐ </p>
+                        <p className='text-body-bold'>
+                            {totalRevenue.toLocaleString()} VNĐ{' '}
+                        </p>
                     </CardContent>
                 </Card>
                 <Card>
@@ -52,8 +52,7 @@ export default async function Home() {
                         <ShoppingBag className='max-sm:hidden' />
                     </CardHeader>
                     <CardContent>
-                        {/* <p className='text-body-bold'>{totalOrders}</p> */}
-                        <p className='text-body-bold'>16</p>
+                        <p className='text-body-bold'>{totalOrders}</p>
                     </CardContent>
                 </Card>
                 <Card>
@@ -62,8 +61,7 @@ export default async function Home() {
                         <UserRound className='max-sm:hidden' />
                     </CardHeader>
                     <CardContent>
-                        {/* <p className='text-body-bold'>{totalCustomers}</p> */}
-                        <p className='text-body-bold'>23</p>
+                        <p className='text-body-bold'>{totalCustomers}</p>
                     </CardContent>
                 </Card>
                 <Card>
@@ -72,8 +70,7 @@ export default async function Home() {
                         <Tag className='max-sm:hidden' />
                     </CardHeader>
                     <CardContent>
-                        {/* <p className='text-body-bold'>{totalProducts}</p> */}
-                        <p className='text-body-bold'>25</p>
+                        <p className='text-body-bold'>{totalProducts}</p>
                     </CardContent>
                 </Card>
                 <Card>
@@ -82,8 +79,7 @@ export default async function Home() {
                         <Shapes className='max-sm:hidden' />
                     </CardHeader>
                     <CardContent>
-                        {/* <p className='text-body-bold'>{totalCategories}</p> */}
-                        <p className='text-body-bold'>8</p>
+                        <p className='text-body-bold'>{totalCategories}</p>
                     </CardContent>
                 </Card>
 
@@ -97,6 +93,8 @@ export default async function Home() {
                     </CardContent>
                 </Card>
             </div>
+
+            
             <Card className='mt-10'>
                 <CardHeader>
                     <CardTitle>Sales Chart (VNĐ)</CardTitle>
