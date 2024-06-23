@@ -1,15 +1,16 @@
-import Order from '@/lib/models/Order';
+
 import { connectToDB } from '@/lib/mongoDB';
 import { NextRequest, NextResponse } from 'next/server';
 import User from '@/lib/models/User';
 import OrderDetail from '@/lib/models/order-detail';
+import Order from '@/lib/models/Order';
 
 export const GET = async (req: NextRequest) => {
     try {
         await connectToDB();
 
         const orders = await Order.find()
-            .sort({ createdAt: 'desc' })
+            .sort({ createdAt: 'asc' })
             .populate({ path: 'user_id', model: User })
             .populate({ path: 'detail_id', model: OrderDetail });
 

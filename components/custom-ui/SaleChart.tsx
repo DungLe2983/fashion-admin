@@ -20,7 +20,7 @@ const SalesChart = ({ data }: { data: any[] }) => {
 
     const getOrders = async () => {
         try {
-            const res = await fetch('/api/orders', {
+            const res = await fetch('/api/salechart', {
                 method: 'GET',
             });
             const data = await res.json();

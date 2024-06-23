@@ -1,6 +1,8 @@
 import Order from '@/lib/models/Order';
 import Product from '@/lib/models/Product';
 import Size from '@/lib/models/Size';
+import Color from '@/lib/models/Color';
+import ProductItem from '@/lib/models/ProductItem';
 import User from '@/lib/models/User';
 import OrderDetail from '@/lib/models/order-detail';
 import { connectToDB } from '@/lib/mongoDB';
@@ -23,10 +25,11 @@ export const GET = async (
             order_id: params.orderId,
         }).populate({
             path: 'product_item_id',
+            model: ProductItem,
             populate: [
-                { path: 'product_id' },
-                { path: 'color_id' },
-                { path: 'size_id' },
+                { path: 'product_id', model: Product },
+                { path: 'color_id', model: Color },
+                { path: 'size_id', model: Size },
             ],
         });
 
@@ -71,10 +74,11 @@ export const PUT = async (req: NextRequest, context: any) => {
             order_id: data.orderId,
         }).populate({
             path: 'product_item_id',
+            model: ProductItem,
             populate: [
-                { path: 'product_id' },
-                { path: 'color_id' },
-                { path: 'size_id' },
+                { path: 'product_id', model: Product },
+                { path: 'color_id', model: Color },
+                { path: 'size_id', model: Size },
             ],
         });
 

@@ -51,7 +51,13 @@ const OrderForm: React.FC<OrderFormProps> = ({ initialData }) => {
             e.preventDefault();
         }
     };
-    const onSubmit = async (values: z.infer<typeof formSchema>) => {
+
+    const onSubmit = async (
+        e: React.FormEvent<HTMLFormElement>,
+        values: z.infer<typeof formSchema>
+    ) => {
+        e.preventDefault(); // Ngăn chặn hành vi mặc định của sự kiện submit
+
         try {
             setLoading(true);
             const url = `/api/orders/${initialData._id}`;
@@ -59,20 +65,23 @@ const OrderForm: React.FC<OrderFormProps> = ({ initialData }) => {
             const res = await fetch(url, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(''),
+                body: JSON.stringify(values),
             });
-            if (res.ok) {
-                setLoading(false);
-                toast.success(`Orders ${initialData ? 'updated' : 'created'}`);
-                window.location.href = '/orders';
+
+            if (!res.ok) {
+                toast.error('Orders update failed');
+            } else {
+                toast.success('Orders updated successfully');
                 router.push('/orders');
             }
+
+            setLoading(false);
         } catch (err) {
             console.log('[orders_POST]', err);
             toast.error('Something went wrong. Please try again!');
         }
     };
-    console.log('Intial data: ', initialData);
+
     return (
         <div className='p-10'>
             {initialData ? (
@@ -255,7 +264,7 @@ const OrderForm: React.FC<OrderFormProps> = ({ initialData }) => {
                                                 className='w-32 h-32 object-cover'
                                                 src={
                                                     item.product_item_id
-                                                        .product_id.image
+                                                        ?.product_id.image
                                                 }
                                                 alt='productInCartImg'
                                             />
@@ -263,18 +272,18 @@ const OrderForm: React.FC<OrderFormProps> = ({ initialData }) => {
                                                 <p className=' cursor-pointer hover:text-primary font-semibold'>
                                                     {
                                                         item.product_item_id
-                                                            .product_id.name
+                                                            ?.product_id.name
                                                     }
                                                 </p>
                                                 <p>
                                                     {
                                                         item.product_item_id
-                                                            .color_id.name
+                                                            ?.color_id.name
                                                     }{' '}
                                                     /{' '}
                                                     {
                                                         item.product_item_id
-                                                            .size_id.name
+                                                            ?.size_id.name
                                                     }
                                                 </p>
                                             </div>
@@ -286,7 +295,7 @@ const OrderForm: React.FC<OrderFormProps> = ({ initialData }) => {
                                         </p>
                                     </td>
                                     <td className='px-6 py-4 font-semibold text-gray-900'>
-                                        {item.product_item_id.price.toLocaleString()}{' '}
+                                        {item.product_item_id?.price.toLocaleString()}{' '}
                                         đ
                                     </td>
                                     <td className='px-6 py-4 font-semibold text-gray-900'>
