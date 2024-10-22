@@ -32,6 +32,9 @@ const Delete: React.FC<DeleteProps> = ({ item, id }) => {
                 setLoading(false);
                 window.location.href = `/${itemType}`;
                 toast.success(`${item} deleted`);
+            } else {
+                const data = await res.json();
+                toast.error(data.message);
             }
         } catch (err) {
             console.log(err);

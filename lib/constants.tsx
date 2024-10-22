@@ -6,7 +6,9 @@ import {
     Shrink,
     SquareKanban,
     Tag,
+    TicketPercent,
     UsersRound,
+
 } from 'lucide-react';
 
 export const navLinks = [
@@ -44,6 +46,11 @@ export const navLinks = [
         url: '/orders',
         icon: <ShoppingBag />,
         label: 'Orders',
+    },
+    {
+        url: '/promotions',
+        icon: <TicketPercent />,
+        label: 'Promotions',
     },
     {
         url: '/users',

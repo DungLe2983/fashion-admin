@@ -13,6 +13,14 @@ type SizeType = {
     name: string;
     description: string;
 };
+type PromotionType = {
+    _id: string;
+    code: string;
+    name: string;
+    count: number;
+    percent: number;
+    price_promotion: number;
+};
 type ProductType = {
     _id: string;
     name: string;
@@ -35,6 +43,7 @@ type OrderType = {
     _id: string;
     user_id: UserType;
     detail_id: OrderDetailType;
+    promotion_id: PromotionType;
     phone: string;
     address: string;
     note: string;
