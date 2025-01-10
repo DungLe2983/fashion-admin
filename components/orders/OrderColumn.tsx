@@ -75,8 +75,5 @@ export const columns: ColumnDef<OrderType>[] = [
             );
         },
     },
-    // {
-    //     accessorKey: 'Actions',
-    //     cell: ({ row }) => <Delete item='orders' id={row.original._id} />,
-    // },
+  
 ];
